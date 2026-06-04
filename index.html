@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Command Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05050a;
+      --surface: #0b0b14;
+      --card: #10101a;
+      --card-hover: #151521;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.14);
+      --text: #dde1f0;
+      --muted: #5a5a7a;
+      --muted2: #8080a0;
+
+      --english: #a78bfa;
+      --chemistry: #34d399;
+      --methods: #60a5fa;
+      --specialist: #fbbf24;
+      --ucat: #f472b6;
+      --physics: #22d3ee;
+      --exam: #f87171;
+      --workshop: #2dd4bf;
+      --routine: #94a3b8;
+      --commute: #64748b;
+      --break: #4b5563;
+      --sleep: #2a2a3a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -40%;
+      left: -20%;
+      width: 60%;
+      height: 70%;
+      background: radial-gradient(ellipse, rgba(96,165,250,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+    /* ─── HEADER ─── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5,5,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--methods);
+      box-shadow: 0 0 10px var(--methods);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--methods); }
+      50% { opacity: 0.6; box-shadow: 0 0 20px var(--methods); }
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .overall-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 120px;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--methods), var(--physics));
+      border-radius: 2px;
+      transition: width 0.5s ease;
+      box-shadow: 0 0 8px rgba(96,165,250,0.5);
+    }
+
+    .progress-pct {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--methods);
+      min-width: 36px;
+      text-align: right;
+    }
+
+    .next-sac-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(248,113,113,0.12);
+      border: 1px solid rgba(248,113,113,0.25);
+      color: var(--exam);
+      white-space: nowrap;
+    }
+
+    /* ─── DAY STRIP ─── */
+    .day-strip-wrapper {
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+      background: rgba(5,5,10,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .day-strip-wrapper::-webkit-scrollbar { display: none; }
+
+    .day-strip {
+      display: flex;
+      gap: 6px;
+      min-width: max-content;
+    }
+
+    .day-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      min-width: 64px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .day-pill:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+    }
+
+    .day-pill.active {
+      background: rgba(96,165,250,0.1);
+      border-color: rgba(96,165,250,0.3);
+    }
+
+    .day-pill.today {
+      background: rgba(96,165,250,0.06);
+    }
+
+    .day-pill.has-exam {
+      border-color: rgba(248,113,113,0.2);
+    }
+
+    .day-pill.active.has-exam {
+      background: rgba(248,113,113,0.1);
+      border-color: rgba(248,113,113,0.35);
+    }
+
+    .pill-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted2);
+    }
+
+    .day-pill.active .pill-label { color: var(--methods); }
+    .day-pill.active.has-exam .pill-label { color: var(--exam); }
+
+    .pill-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .pill-dots {
+      display: flex;
+      gap: 3px;
+      margin-top: 1px;
+    }
+
+    .pill-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+    }
+
+    .pill-badge {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 5px;
+      border-radius: 3px;
+      margin-top: 2px;
+    }
+
+    /* ─── MAIN ─── */
+    .main-layout {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    /* ─── DAY HEADER ─── */
+    .day-header {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .day-title-group {}
+
+    .day-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .day-subtitle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .day-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-today {
+      background: rgba(34,211,238,0.12);
+      border: 1px solid rgba(34,211,238,0.3);
+      color: var(--physics);
+    }
+
+    .badge-sacweek {
+      background: rgba(248,113,113,0.12);
+      border: 1px solid rgba(248,113,113,0.3);
+      color: var(--exam);
+    }
+
+    .badge-holiday {
+      background: rgba(251,191,36,0.12);
+      border: 1px solid rgba(251,191,36,0.3);
+      color: var(--specialist);
+    }
+
+    .badge-gat {
+      background: rgba(248,113,113,0.15);
+      border: 1px solid rgba(248,113,113,0.4);
+      color: var(--exam);
+    }
+
+    .day-task-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted2);
+    }
+
+    .day-stats-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .day-progress-ring {
+      position: relative;
+      width: 52px;
+      height: 52px;
+    }
+
+    .ring-svg { transform: rotate(-90deg); }
+
+    .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 3; }
+    .ring-fill { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+
+    .ring-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ─── TASK LIST ─── */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .task-card {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-radius: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .task-card:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+      transform: translateX(2px);
+    }
+
+    .task-card.completed {
+      opacity: 0.45;
+    }
+
+    .task-card.completed:hover {
+      opacity: 0.65;
+    }
+
+    .task-card.exam-card {
+      border-color: rgba(248,113,113,0.2);
+    }
+
+    .task-accent {
+      width: 4px;
+      flex-shrink: 0;
+      align-self: stretch;
+    }
+
+    .task-time {
+      padding: 14px 12px 14px 14px;
+      flex-shrink: 0;
+      min-width: 90px;
+    }
+
+    .time-start {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .time-end {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    .task-body {
+      flex: 1;
+      padding: 14px 10px;
+      min-width: 0;
+    }
+
+    .task-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .task-card.completed .task-label {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .task-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .task-dur {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .task-loc {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 2px 6px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 3px;
+    }
+
+    .exam-label-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+      background: rgba(248,113,113,0.15);
+      color: var(--exam);
+      border: 1px solid rgba(248,113,113,0.3);
+    }
+
+    .task-check {
+      flex-shrink: 0;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.15);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .check-btn:hover {
+      border-color: rgba(255,255,255,0.4);
+      transform: scale(1.1);
+    }
+
+    .check-btn.checked {
+      border: none;
+    }
+
+    .check-icon {
+      display: none;
+      color: #fff;
+    }
+
+    .check-btn.checked .check-icon {
+      display: block;
+    }
+
+    /* ─── MILESTONE BANNER ─── */
+    .milestone-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(52,211,153,0.06);
+      border: 1px solid rgba(52,211,153,0.2);
+      margin: 4px 0;
+      animation: milestone-in 0.5s ease;
+    }
+
+    @keyframes milestone-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .milestone-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .milestone-text {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--chemistry);
+    }
+
+    /* ─── SUBJECT STATS ─── */
+    .subject-stats {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stats-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .stat-card:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stat-counts {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted2);
+      margin-bottom: 8px;
+    }
+
+    .stat-bar {
+      height: 3px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+
+    .stat-complete-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-top: 6px;
+      display: inline-block;
+    }
+
+    /* ─── EMPTY / INSTRUCTIONS ─── */
+    .all-done {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .task-card {
+      animation: card-in 0.3s ease both;
+    }
+
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      .header-right { gap: 12px; }
+      .progress-track { width: 80px; }
+      .next-sac-badge { display: none; }
+      .day-strip-wrapper { padding: 10px 16px; }
+      .main-layout { padding: 24px 16px 80px; }
+      .day-title { font-size: 20px; }
+      .task-time { min-width: 76px; padding: 12px 8px 12px 12px; }
+      .time-start { font-size: 10px; }
+      .time-end { font-size: 9px; }
+      .task-label { font-size: 12px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ─── CONFETTI particle ─── */
+    .confetti-particle {
+      position: fixed;
+      top: -10px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: confetti-fall 2.5s ease-out forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// SCHEDULE DATA
+// ─────────────────────────────────────────────────────────────
+
+const SUBJECTS = {
+  english:   { label: 'English',          color: '#a78bfa' },
+  chemistry: { label: 'Chemistry',        color: '#34d399' },
+  methods:   { label: 'Methods',          color: '#60a5fa' },
+  specialist:{ label: 'Specialist',       color: '#fbbf24' },
+  ucat:      { label: 'UCAT',             color: '#f472b6' },
+  physics:   { label: 'Physics',          color: '#22d3ee' },
+  exam:      { label: 'SAC / GAT Exam',   color: '#f87171' },
+  workshop:  { label: 'Workshop/Tuition', color: '#2dd4bf' },
+  routine:   { label: 'Morning Routine',  color: '#94a3b8' },
+  commute:   { label: 'Commute',          color: '#64748b' },
+  break:     { label: 'Meal / Break',     color: '#4b5563' },
+  sleep:     { label: 'Sleep',            color: '#2a3a50' },
+};
+
+const DAYS = [
+  {
+    id: 'd01', date: '2026-06-04', label: 'Thu', num: '4', badge: 'today',
+    title: 'Thursday, June 4', hasExam: false,
+    tasks: [
+      { id:'d01t01', s:'3:25 PM', e:'4:15 PM', dur:'50 mins', label:'Travel Home', subject:'commute', loc:'Commute' },
+      { id:'d01t02', s:'4:15 PM', e:'6:03 PM', dur:'1h 48m', label:'English: Highlight doc & fix grammar', subject:'english', loc:'Home' },
+      { id:'d01t03', s:'6:03 PM', e:'7:00 PM', dur:'57m', label:'Dinner & Break', subject:'break', loc:'Home' },
+      { id:'d01t04', s:'7:00 PM', e:'8:12 PM', dur:'1h 12m', label:'Chemistry: Complete SAC 1', subject:'chemistry', loc:'Home' },
+      { id:'d01t05', s:'8:12 PM', e:'9:12 PM', dur:'1h', label:'Chemistry: Review SAC 1', subject:'chemistry', loc:'Home' },
+      { id:'d01t06', s:'9:12 PM', e:'10:24 PM', dur:'1h 12m', label:'Chemistry: Complete SAC 2', subject:'chemistry', loc:'Home' },
+      { id:'d01t07', s:'10:24 PM', e:'11:12 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d01t08', s:'11:15 PM', e:'7:15 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd02', date: '2026-06-05', label: 'Fri', num: '5', badge: null,
+    title: 'Friday, June 5', hasExam: false,
+    tasks: [
+      { id:'d02t01', s:'7:15 AM', e:'8:15 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d02t02', s:'8:15 AM', e:'9:05 AM', dur:'50m', label:'Travel to School', subject:'commute', loc:'Commute' },
+      { id:'d02t03', s:'12:05 PM', e:'12:55 PM', dur:'50m', label:'Chemistry: Review SAC 2', subject:'chemistry', loc:'School' },
+      { id:'d02t04', s:'1:45 PM', e:'3:25 PM', dur:'1h 40m', label:'Chemistry: Finish Review SAC 2 → Complete SAC 3 → Review SAC 3', subject:'chemistry', loc:'School' },
+      { id:'d02t05', s:'3:25 PM', e:'4:15 PM', dur:'50m', label:'Travel to Tuition', subject:'commute', loc:'Commute' },
+      { id:'d02t06', s:'4:15 PM', e:'6:15 PM', dur:'2h', label:'External Tuition', subject:'workshop', loc:'Tuition' },
+      { id:'d02t07', s:'6:15 PM', e:'7:15 PM', dur:'1h', label:'Travel Home + Overtime Buffer', subject:'commute', loc:'Commute' },
+      { id:'d02t08', s:'7:15 PM', e:'8:15 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d02t09', s:'8:15 PM', e:'8:45 PM', dur:'30m', label:'Chemistry: Finish Review SAC 3', subject:'chemistry', loc:'Home' },
+      { id:'d02t10', s:'8:45 PM', e:'11:15 PM', dur:'2h 30m', label:'Chemistry: Revise all chemistry content for SAC', subject:'chemistry', loc:'Home', milestone: '🧪 All Chemistry Tasks Complete!' },
+      { id:'d02t11', s:'11:15 PM', e:'12:03 AM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d02t12', s:'12:05 AM', e:'8:05 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd03', date: '2026-06-06', label: 'Sat', num: '6', badge: null,
+    title: 'Saturday, June 6', hasExam: false,
+    tasks: [
+      { id:'d03t01', s:'8:05 AM', e:'9:05 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d03t02', s:'9:05 AM', e:'1:25 PM', dur:'4h 20m', label:'English: Memorise & rehearse speech', subject:'english', loc:'Home' },
+      { id:'d03t03', s:'1:25 PM', e:'2:20 PM', dur:'55m', label:'Lunch', subject:'break', loc:'Home' },
+      { id:'d03t04', s:'2:20 PM', e:'3:00 PM', dur:'40m', label:'Travel to Workshop', subject:'commute', loc:'Commute' },
+      { id:'d03t05', s:'3:00 PM', e:'5:00 PM', dur:'2h', label:'Weekend Revision Workshop', subject:'workshop', loc:'Workshop' },
+      { id:'d03t06', s:'5:00 PM', e:'6:00 PM', dur:'1h', label:'Travel Home + Overtime Buffer', subject:'commute', loc:'Commute' },
+      { id:'d03t07', s:'6:00 PM', e:'7:00 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d03t08', s:'7:00 PM', e:'10:20 PM', dur:'3h 20m', label:'English: Memorise & rehearse speech', subject:'english', loc:'Home' },
+      { id:'d03t09', s:'10:20 PM', e:'11:08 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d03t10', s:'11:15 PM', e:'7:15 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd04', date: '2026-06-07', label: 'Sun', num: '7', badge: null,
+    title: 'Sunday, June 7', hasExam: false,
+    tasks: [
+      { id:'d04t01', s:'7:15 AM', e:'8:15 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d04t02', s:'8:15 AM', e:'12:15 PM', dur:'4h', label:'English: Memorise & rehearse speech', subject:'english', loc:'Home' },
+      { id:'d04t03', s:'12:15 PM', e:'1:15 PM', dur:'1h', label:'Lunch', subject:'break', loc:'Home' },
+      { id:'d04t04', s:'1:15 PM', e:'5:20 PM', dur:'4h 5m', label:'English: Memorise & rehearse speech', subject:'english', loc:'Home' },
+      { id:'d04t05', s:'5:20 PM', e:'6:00 PM', dur:'40m', label:'Travel to Workshop', subject:'commute', loc:'Commute' },
+      { id:'d04t06', s:'6:00 PM', e:'8:00 PM', dur:'2h', label:'Weekend Revision Workshop', subject:'workshop', loc:'Workshop' },
+      { id:'d04t07', s:'8:00 PM', e:'9:00 PM', dur:'1h', label:'Travel Home + Overtime Buffer', subject:'commute', loc:'Commute' },
+      { id:'d04t08', s:'9:00 PM', e:'10:00 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d04t09', s:'10:00 PM', e:'10:15 PM', dur:'15m', label:'English: Memorise & rehearse speech', subject:'english', loc:'Home', milestone: '📖 All English Tasks Complete! (16 hrs done)' },
+      { id:'d04t10', s:'10:15 PM', e:'11:03 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d04t11', s:'11:10 PM', e:'7:10 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd05', date: '2026-06-08', label: 'Mon', num: '8', badge: 'holiday',
+    title: "Monday, June 8", hasExam: false,
+    tasks: [
+      { id:'d05t01', s:'7:10 AM', e:'8:10 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d05t02', s:'8:10 AM', e:'9:22 AM', dur:'1h 12m', label:"Methods: Complete last AOS 2 SAC", subject:'methods', loc:'Home' },
+      { id:'d05t03', s:'9:22 AM', e:'10:34 AM', dur:'1h 12m', label:"Methods: Review last AOS 2 SAC", subject:'methods', loc:'Home' },
+      { id:'d05t04', s:'10:34 AM', e:'11:46 AM', dur:'1h 12m', label:"Methods: Complete AOS 2 second last SAC", subject:'methods', loc:'Home' },
+      { id:'d05t05', s:'11:46 AM', e:'12:58 PM', dur:'1h 12m', label:"Methods: Review AOS 2 second last SAC", subject:'methods', loc:'Home' },
+      { id:'d05t06', s:'12:58 PM', e:'1:58 PM', dur:'1h', label:'Lunch', subject:'break', loc:'Home' },
+      { id:'d05t07', s:'1:58 PM', e:'2:34 PM', dur:'36m', label:'Methods: Complete harder max/min canvas', subject:'methods', loc:'Home' },
+      { id:'d05t08', s:'2:34 PM', e:'3:46 PM', dur:'1h 12m', label:'Methods: Review harder max/min canvas', subject:'methods', loc:'Home' },
+      { id:'d05t09', s:'3:46 PM', e:'5:34 PM', dur:'1h 48m', label:'Methods: Complete all contour check red chilli pt 1', subject:'methods', loc:'Home' },
+      { id:'d05t10', s:'5:34 PM', e:'7:22 PM', dur:'1h 48m', label:'Methods: Review all contour check red chilli pt 1', subject:'methods', loc:'Home' },
+      { id:'d05t11', s:'7:22 PM', e:'8:22 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d05t12', s:'8:22 PM', e:'10:46 PM', dur:'2h 24m', label:'Methods: Complete reading through textbook', subject:'methods', loc:'Home' },
+      { id:'d05t13', s:'10:46 PM', e:'11:34 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d05t14', s:'11:45 PM', e:'7:45 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd06', date: '2026-06-09', label: 'Tue', num: '9', badge: null,
+    title: 'Tuesday, June 9', hasExam: false,
+    tasks: [
+      { id:'d06t01', s:'7:45 AM', e:'8:45 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d06t02', s:'8:45 AM', e:'9:35 AM', dur:'50m', label:'Travel to School', subject:'commute', loc:'Commute' },
+      { id:'d06t03', s:'12:05 PM', e:'12:55 PM', dur:'50m', label:'Methods: Complete MHS SAC', subject:'methods', loc:'School' },
+      { id:'d06t04', s:'1:45 PM', e:'3:19 PM', dur:'1h 34m', label:'Methods: Finish Complete MHS SAC', subject:'methods', loc:'School' },
+      { id:'d06t05', s:'3:19 PM', e:'3:25 PM', dur:'6m', label:'Methods: Review MHS SAC (start)', subject:'methods', loc:'School' },
+      { id:'d06t06', s:'3:25 PM', e:'4:15 PM', dur:'50m', label:'Travel Home', subject:'commute', loc:'Commute' },
+      { id:'d06t07', s:'4:15 PM', e:'7:45 PM', dur:'3h 30m', label:'Methods: Finish Review MHS SAC', subject:'methods', loc:'Home' },
+      { id:'d06t08', s:'7:45 PM', e:'8:45 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d06t09', s:'8:45 PM', e:'10:45 PM', dur:'2h', label:'Methods: Complete Q bank for methods MHS contour', subject:'methods', loc:'Home' },
+      { id:'d06t10', s:'10:45 PM', e:'11:33 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d06t11', s:'11:40 PM', e:'7:40 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd07', date: '2026-06-10', label: 'Wed', num: '10', badge: null,
+    title: 'Wednesday, June 10', hasExam: false,
+    tasks: [
+      { id:'d07t01', s:'7:40 AM', e:'8:40 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d07t02', s:'8:40 AM', e:'9:30 AM', dur:'50m', label:'Travel to School', subject:'commute', loc:'Commute' },
+      { id:'d07t03', s:'12:05 PM', e:'12:55 PM', dur:'50m', label:'Methods: Finish Complete Q bank', subject:'methods', loc:'School' },
+      { id:'d07t04', s:'3:25 PM', e:'4:15 PM', dur:'50m', label:'Travel Home', subject:'commute', loc:'Commute' },
+      { id:'d07t05', s:'4:15 PM', e:'5:01 PM', dur:'46m', label:'Methods: Finish Complete Q bank (cont.)', subject:'methods', loc:'Home' },
+      { id:'d07t06', s:'5:01 PM', e:'8:37 PM', dur:'3h 36m', label:'Methods: Review of methods Q bank (contour)', subject:'methods', loc:'Home', milestone: '📐 All Methods Practice Tasks Complete!' },
+      { id:'d07t07', s:'8:37 PM', e:'9:37 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d07t08', s:'9:37 PM', e:'10:49 PM', dur:'1h 12m', label:'Specialist: Complete SAC 1 contour AOS 4', subject:'specialist', loc:'Home' },
+      { id:'d07t09', s:'10:49 PM', e:'11:37 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d07t10', s:'11:45 PM', e:'7:15 AM', dur:'7.5h', label:'Sleep (adjusted for Period 1 free Thu)', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd08', date: '2026-06-11', label: 'Thu', num: '11', badge: 'sacweek',
+    title: 'Thursday, June 11', hasExam: true,
+    tasks: [
+      { id:'d08t01', s:'7:15 AM', e:'8:15 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d08t02', s:'8:15 AM', e:'9:05 AM', dur:'50m', label:'Travel to School', subject:'commute', loc:'Commute' },
+      { id:'d08t03', s:'9:05 AM', e:'9:50 AM', dur:'45m', label:'Specialist: Finish Complete SAC 1', subject:'specialist', loc:'School' },
+      { id:'d08t04', s:'9:50 AM', e:'11:05 AM', dur:'1h 15m', label:'⚡ ENGLISH SAC', subject:'exam', loc:'School', isExam: true },
+      { id:'d08t05', s:'1:00 PM', e:'2:35 PM', dur:'1h 35m', label:'⚡ METHODS SAC — Part 1', subject:'exam', loc:'School', isExam: true },
+      { id:'d08t06', s:'3:25 PM', e:'4:15 PM', dur:'50m', label:'Travel Home', subject:'commute', loc:'Commute' },
+      { id:'d08t07', s:'4:15 PM', e:'4:30 PM', dur:'15m', label:'Specialist: Finish Complete SAC 1 (remaining)', subject:'specialist', loc:'Home' },
+      { id:'d08t08', s:'4:30 PM', e:'6:42 PM', dur:'2h 12m', label:'Specialist: Review SAC 1 contour AOS 4', subject:'specialist', loc:'Home' },
+      { id:'d08t09', s:'6:42 PM', e:'7:42 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d08t10', s:'7:42 PM', e:'9:48 PM', dur:'2h 6m', label:'Specialist: Complete SAC 2 contour AOS 4', subject:'specialist', loc:'Home' },
+      { id:'d08t11', s:'9:48 PM', e:'10:18 PM', dur:'30m', label:'Specialist: Review SAC 2 (start)', subject:'specialist', loc:'Home' },
+      { id:'d08t12', s:'10:18 PM', e:'11:06 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d08t13', s:'11:15 PM', e:'7:15 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd09', date: '2026-06-12', label: 'Fri', num: '12', badge: 'sacweek',
+    title: 'Friday, June 12', hasExam: true,
+    tasks: [
+      { id:'d09t01', s:'7:15 AM', e:'8:15 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d09t02', s:'8:15 AM', e:'9:05 AM', dur:'50m', label:'Travel to School', subject:'commute', loc:'Commute' },
+      { id:'d09t03', s:'9:05 AM', e:'11:15 AM', dur:'2h 10m', label:'Specialist: Finish Review SAC 2 → Complete SAC 3', subject:'specialist', loc:'School' },
+      { id:'d09t04', s:'11:15 AM', e:'12:30 PM', dur:'1h 15m', label:'⚡ CHEMISTRY SAC', subject:'exam', loc:'School', isExam: true },
+      { id:'d09t05', s:'1:15 PM', e:'3:30 PM', dur:'2h 15m', label:'⚡ METHODS SAC 1 — Part 2', subject:'exam', loc:'School', isExam: true },
+      { id:'d09t06', s:'3:30 PM', e:'4:20 PM', dur:'50m', label:'Travel Home', subject:'commute', loc:'Commute' },
+      { id:'d09t07', s:'4:20 PM', e:'5:22 PM', dur:'1h 2m', label:'Specialist: Finish Complete SAC 3', subject:'specialist', loc:'Home' },
+      { id:'d09t08', s:'5:22 PM', e:'6:58 PM', dur:'1h 36m', label:'Specialist: Review SAC 3 contour AOS 4', subject:'specialist', loc:'Home' },
+      { id:'d09t09', s:'6:58 PM', e:'7:58 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d09t10', s:'7:58 PM', e:'9:58 PM', dur:'2h', label:'Specialist: Complete SAC 4 contour AOS 4', subject:'specialist', loc:'Home' },
+      { id:'d09t11', s:'9:58 PM', e:'10:28 PM', dur:'30m', label:'Specialist: Review SAC 4 (start)', subject:'specialist', loc:'Home' },
+      { id:'d09t12', s:'10:28 PM', e:'11:16 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d09t13', s:'11:30 PM', e:'7:30 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd10', date: '2026-06-13', label: 'Sat', num: '13', badge: null,
+    title: 'Saturday, June 13', hasExam: false,
+    tasks: [
+      { id:'d10t01', s:'7:30 AM', e:'8:30 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d10t02', s:'8:30 AM', e:'10:02 AM', dur:'1h 32m', label:'Specialist: Finish Review SAC 4', subject:'specialist', loc:'Home' },
+      { id:'d10t03', s:'10:02 AM', e:'12:02 PM', dur:'2h', label:'Specialist: Complete SAC 5 contour AOS 4', subject:'specialist', loc:'Home' },
+      { id:'d10t04', s:'12:02 PM', e:'1:02 PM', dur:'1h', label:'Lunch', subject:'break', loc:'Home' },
+      { id:'d10t05', s:'1:02 PM', e:'2:20 PM', dur:'1h 18m', label:'Specialist: Review SAC 5 (start)', subject:'specialist', loc:'Home' },
+      { id:'d10t06', s:'2:20 PM', e:'3:00 PM', dur:'40m', label:'Travel to Workshop', subject:'commute', loc:'Commute' },
+      { id:'d10t07', s:'3:00 PM', e:'5:00 PM', dur:'2h', label:'Weekend Revision Workshop', subject:'workshop', loc:'Workshop' },
+      { id:'d10t08', s:'5:00 PM', e:'6:00 PM', dur:'1h', label:'Travel Home + Overtime Buffer', subject:'commute', loc:'Commute' },
+      { id:'d10t09', s:'6:00 PM', e:'6:38 PM', dur:'38m', label:'Specialist: Finish Review SAC 5', subject:'specialist', loc:'Home' },
+      { id:'d10t10', s:'6:38 PM', e:'7:38 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d10t11', s:'7:38 PM', e:'8:26 PM', dur:'48m', label:'Specialist: Complete all red chilli Qs pt 1', subject:'specialist', loc:'Home' },
+      { id:'d10t12', s:'8:26 PM', e:'9:14 PM', dur:'48m', label:'Specialist: Review all red chilli Qs pt 1', subject:'specialist', loc:'Home' },
+      { id:'d10t13', s:'9:14 PM', e:'10:24 PM', dur:'1h 10m', label:'Specialist: Complete all Qs pt 3 (start)', subject:'specialist', loc:'Home' },
+      { id:'d10t14', s:'10:24 PM', e:'11:12 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d10t15', s:'11:30 PM', e:'7:30 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd11', date: '2026-06-14', label: 'Sun', num: '14', badge: null,
+    title: 'Sunday, June 14', hasExam: false,
+    tasks: [
+      { id:'d11t01', s:'7:30 AM', e:'8:30 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d11t02', s:'8:30 AM', e:'1:00 PM', dur:'4h 30m', label:'Specialist: Complete all Qs pt 3', subject:'specialist', loc:'Home' },
+      { id:'d11t03', s:'1:00 PM', e:'2:00 PM', dur:'1h', label:'Lunch', subject:'break', loc:'Home' },
+      { id:'d11t04', s:'2:00 PM', e:'3:08 PM', dur:'1h 8m', label:'Specialist: Finish Complete all Qs pt 3', subject:'specialist', loc:'Home' },
+      { id:'d11t05', s:'3:08 PM', e:'5:20 PM', dur:'2h 12m', label:'Specialist: Review all Qs pt 3 (start)', subject:'specialist', loc:'Home' },
+      { id:'d11t06', s:'5:20 PM', e:'6:00 PM', dur:'40m', label:'Travel to Workshop', subject:'commute', loc:'Commute' },
+      { id:'d11t07', s:'6:00 PM', e:'8:00 PM', dur:'2h', label:'Weekend Revision Workshop', subject:'workshop', loc:'Workshop' },
+      { id:'d11t08', s:'8:00 PM', e:'9:00 PM', dur:'1h', label:'Travel Home + Overtime Buffer', subject:'commute', loc:'Commute' },
+      { id:'d11t09', s:'9:00 PM', e:'10:00 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d11t10', s:'10:00 PM', e:'10:48 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d11t11', s:'11:00 PM', e:'7:00 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd12', date: '2026-06-15', label: 'Mon', num: '15', badge: 'sacweek',
+    title: 'Monday, June 15', hasExam: true,
+    tasks: [
+      { id:'d12t01', s:'7:00 AM', e:'8:00 AM', dur:'1h', label:'Morning Routine', subject:'routine', loc:'Home' },
+      { id:'d12t02', s:'8:00 AM', e:'8:50 AM', dur:'50m', label:'Travel to School', subject:'commute', loc:'Commute' },
+      { id:'d12t03', s:'8:50 AM', e:'11:00 AM', dur:'2h 10m', label:'⚡ METHODS SAC 2', subject:'exam', loc:'School', isExam: true },
+      { id:'d12t04', s:'11:00 AM', e:'1:45 PM', dur:'2h 45m', label:'Classes & Lunch', subject:'break', loc:'School' },
+      { id:'d12t05', s:'1:45 PM', e:'3:25 PM', dur:'1h 40m', label:'Specialist: Review all Qs pt 3', subject:'specialist', loc:'School' },
+      { id:'d12t06', s:'3:25 PM', e:'4:15 PM', dur:'50m', label:'Travel Home', subject:'commute', loc:'Commute' },
+      { id:'d12t07', s:'4:15 PM', e:'7:11 PM', dur:'2h 56m', label:'Specialist: Finish Review all Qs pt 3', subject:'specialist', loc:'Home', milestone: '🏆 All Specialist Tasks Complete!' },
+      { id:'d12t08', s:'7:11 PM', e:'8:11 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d12t09', s:'8:11 PM', e:'11:23 PM', dur:'3h 12m', label:'Physics: Complete MHS practise SACs', subject:'physics', loc:'Home' },
+      { id:'d12t10', s:'11:23 PM', e:'12:11 AM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d12t11', s:'12:15 AM', e:'8:15 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+  {
+    id: 'd13', date: '2026-06-16', label: 'Tue', num: '16', badge: 'gat',
+    title: 'Tuesday, June 16', hasExam: true,
+    tasks: [
+      { id:'d13t01', s:'8:15 AM', e:'3:30 PM', dur:'7h 15m', label:'⚡ GAT — Part 1 & Part 2', subject:'exam', loc:'School', isExam: true },
+      { id:'d13t02', s:'3:30 PM', e:'4:20 PM', dur:'50m', label:'Travel Home', subject:'commute', loc:'Commute' },
+      { id:'d13t03', s:'4:20 PM', e:'5:20 PM', dur:'1h', label:'Physics: Finish Complete MHS practise SACs', subject:'physics', loc:'Home' },
+      { id:'d13t04', s:'5:20 PM', e:'7:44 PM', dur:'2h 24m', label:'Physics: Review for practise SACs', subject:'physics', loc:'Home' },
+      { id:'d13t05', s:'7:44 PM', e:'8:44 PM', dur:'1h', label:'Dinner', subject:'break', loc:'Home' },
+      { id:'d13t06', s:'8:44 PM', e:'11:08 PM', dur:'2h 24m', label:'Physics: Complete physics thick booklet', subject:'physics', loc:'Home', milestone: '⚡ All Physics Tasks Complete!' },
+      { id:'d13t07', s:'11:08 PM', e:'11:56 PM', dur:'48m', label:'UCAT: Daily Practice', subject:'ucat', loc:'Home' },
+      { id:'d13t08', s:'12:00 AM', e:'8:00 AM', dur:'8h', label:'Sleep', subject:'sleep', loc:'Home' },
+    ]
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'studyplanner_completed_v1';
+
+function loadCompleted() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch { return new Set(); }
+}
+
+function saveCompleted(set) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...set])); } catch {}
+}
+
+let completed = loadCompleted();
+let activeDayId = (() => {
+  const today = new Date().toISOString().split('T')[0];
+  const found = DAYS.find(d => d.date === today);
+  return found ? found.id : DAYS[0].id;
+})();
+
+// ─────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────
+
+function subjectColor(subject) {
+  const s = SUBJECTS[subject];
+  return s ? s.color : '#888';
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function getCheckableTasks(day) {
+  return day.tasks.filter(t => t.subject !== 'sleep' && t.subject !== 'commute' && t.subject !== 'break' && t.subject !== 'routine');
+}
+
+function getDayProgress(day) {
+  const checkable = getCheckableTasks(day);
+  if (!checkable.length) return 0;
+  const done = checkable.filter(t => completed.has(t.id)).length;
+  return Math.round((done / checkable.length) * 100);
+}
+
+function getOverallProgress() {
+  let total = 0, done = 0;
+  DAYS.forEach(day => {
+    const checkable = getCheckableTasks(day);
+    total += checkable.length;
+    done += checkable.filter(t => completed.has(t.id)).length;
+  });
+  return total ? Math.round((done / total) * 100) : 0;
+}
+
+function getSubjectStats() {
+  const stats = {};
+  DAYS.forEach(day => {
+    day.tasks.forEach(t => {
+      if (!SUBJECTS[t.subject] || t.subject === 'sleep' || t.subject === 'commute' || t.subject === 'break' || t.subject === 'routine') return;
+      if (!stats[t.subject]) stats[t.subject] = { total: 0, done: 0 };
+      stats[t.subject].total++;
+      if (completed.has(t.id)) stats[t.subject].done++;
+    });
+  });
+  return stats;
+}
+
+function getNextSAC() {
+  const today = new Date().toISOString().split('T')[0];
+  for (const day of DAYS) {
+    if (day.date >= today && day.hasExam) {
+      const d = new Date(day.date + 'T00:00:00');
+      const t = new Date(today + 'T00:00:00');
+      const diff = Math.round((d - t) / (1000 * 60 * 60 * 24));
+      if (diff === 0) return 'SAC TODAY';
+      if (diff === 1) return 'SAC TOMORROW';
+      return `SAC in ${diff} days`;
+    }
+  }
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────
+// RENDER FUNCTIONS
+// ─────────────────────────────────────────────────────────────
+
+function renderApp() {
+  const app = document.getElementById('app');
+  app.innerHTML = renderHeader() + renderDayStrip() + `<div class="main-layout">${renderDayContent()}</div>`;
+  attachEvents();
+}
+
+function renderHeader() {
+  const pct = getOverallProgress();
+  const sacLabel = getNextSAC();
+  return `
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      STUDY CMD
+    </div>
+    <div class="header-right">
+      <div class="overall-progress">
+        <span class="progress-label">Overall</span>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:${pct}%"></div>
+        </div>
+        <span class="progress-pct">${pct}%</span>
+      </div>
+      ${sacLabel ? `<div class="next-sac-badge">${sacLabel}</div>` : ''}
+    </div>
+  </header>`;
+}
+
+function renderDayStrip() {
+  const pills = DAYS.map(day => {
+    const isActive = day.id === activeDayId;
+    const today = new Date().toISOString().split('T')[0];
+    const isToday = day.date === today;
+    const pct = getDayProgress(day);
+    const subjectColors = [...new Set(getCheckableTasks(day).map(t => subjectColor(t.subject)))].slice(0, 4);
+
+    let badgeHtml = '';
+    if (day.badge === 'today') badgeHtml = `<span class="pill-badge" style="background:rgba(34,211,238,0.1);color:#22d3ee;border:1px solid rgba(34,211,238,0.25)">Today</span>`;
+    else if (day.badge === 'sacweek') badgeHtml = `<span class="pill-badge" style="background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.25)">SAC</span>`;
+    else if (day.badge === 'holiday') badgeHtml = `<span class="pill-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.25)">Holiday</span>`;
+    else if (day.badge === 'gat') badgeHtml = `<span class="pill-badge" style="background:rgba(248,113,113,0.12);color:#f87171;border:1px solid rgba(248,113,113,0.3)">GAT</span>`;
+
+    return `
+    <div class="day-pill ${isActive?'active':''} ${isToday?'today':''} ${day.hasExam?'has-exam':''}" data-day="${day.id}">
+      <span class="pill-label">${day.label}</span>
+      <span class="pill-date">${day.num}</span>
+      <div class="pill-dots">
+        ${subjectColors.map(c => `<div class="pill-dot" style="background:${c}"></div>`).join('')}
+      </div>
+      ${badgeHtml}
+    </div>`;
+  }).join('');
+
+  return `<div class="day-strip-wrapper"><div class="day-strip">${pills}</div></div>`;
+}
+
+function renderDayContent() {
+  const day = DAYS.find(d => d.id === activeDayId);
+  if (!day) return '';
+
+  const checkable = getCheckableTasks(day);
+  const doneCount = checkable.filter(t => completed.has(t.id)).length;
+  const pct = checkable.length ? Math.round((doneCount / checkable.length) * 100) : 0;
+
+  // Ring circumference
+  const r = 20;
+  const circ = 2 * Math.PI * r;
+  const offset = circ - (pct / 100) * circ;
+  const ringColor = day.hasExam ? '#f87171' : '#60a5fa';
+
+  let badgeHtml = '';
+  if (day.badge === 'today') badgeHtml = `<span class="day-badge badge-today">Today</span>`;
+  else if (day.badge === 'sacweek') badgeHtml = `<span class="day-badge badge-sacweek">⚠ SAC Week</span>`;
+  else if (day.badge === 'holiday') badgeHtml = `<span class="day-badge badge-holiday">King's Birthday Holiday</span>`;
+  else if (day.badge === 'gat') badgeHtml = `<span class="day-badge badge-gat">⚡ GAT Day</span>`;
+
+  const headerHtml = `
+  <div class="day-header">
+    <div class="day-title-group">
+      <h2 class="day-title">${day.title}</h2>
+      <div class="day-subtitle-row">
+        ${badgeHtml}
+        <span class="day-task-count">${doneCount} / ${checkable.length} study tasks done</span>
+      </div>
+    </div>
+    <div class="day-stats-right">
+      <div class="day-progress-ring">
+        <svg class="ring-svg" width="52" height="52" viewBox="0 0 52 52">
+          <circle class="ring-bg" cx="26" cy="26" r="${r}"/>
+          <circle class="ring-fill" cx="26" cy="26" r="${r}"
+            stroke="${ringColor}"
+            stroke-dasharray="${circ}"
+            stroke-dashoffset="${offset}"/>
+        </svg>
+        <div class="ring-text">${pct}%</div>
+      </div>
+    </div>
+  </div>`;
+
+  let taskListHtml = '<div class="task-list">';
+  day.tasks.forEach((task, idx) => {
+    const color = subjectColor(task.subject);
+    const isDone = completed.has(task.id);
+    const isCheckable = task.subject !== 'sleep' && task.subject !== 'commute' && task.subject !== 'break' && task.subject !== 'routine';
+
+    let metaHtml = `<span class="task-dur">${task.dur}</span>`;
+    if (task.loc && task.loc !== 'Home') {
+      metaHtml += `<span class="task-loc">${task.loc}</span>`;
+    }
+    if (task.isExam) {
+      metaHtml += `<span class="exam-label-badge">EXAM</span>`;
+    }
+
+    const checkHtml = isCheckable ? `
+      <div class="task-check">
+        <div class="check-btn ${isDone ? 'checked' : ''}" data-task="${task.id}"
+             style="${isDone ? `background:${color};box-shadow:0 0 10px ${hexToRgba(color,0.5)}` : ''}">
+          <svg class="check-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>` : `<div style="width:56px"></div>`;
+
+    const cardStyle = task.isExam
+      ? `box-shadow:0 0 0 1px rgba(248,113,113,0.2), inset 0 0 30px rgba(248,113,113,0.03);`
+      : '';
+
+    const animDelay = idx * 0.04;
+
+    taskListHtml += `
+    <div class="task-card ${isDone ? 'completed' : ''} ${task.isExam ? 'exam-card' : ''}"
+         data-task="${task.id}" data-checkable="${isCheckable}"
+         style="animation-delay:${animDelay}s;${cardStyle}">
+      <div class="task-accent" style="background:${color};${isDone ? '' : `box-shadow:2px 0 8px ${hexToRgba(color,0.3)}`}"></div>
+      <div class="task-time">
+        <div class="time-start">${task.s}</div>
+        <div class="time-end">${task.e}</div>
+      </div>
+      <div class="task-body">
+        <div class="task-label">${task.label}</div>
+        <div class="task-meta">${metaHtml}</div>
+      </div>
+      ${checkHtml}
+    </div>`;
+
+    if (task.milestone) {
+      taskListHtml += `
+      <div class="milestone-banner" id="ms-${task.id}">
+        <span class="milestone-icon">🎯</span>
+        <span class="milestone-text">${task.milestone}</span>
+      </div>`;
+    }
+  });
+  taskListHtml += '</div>';
+
+  // Subject stats panel
+  const stats = getSubjectStats();
+  const studySubjects = ['english','chemistry','methods','specialist','ucat','physics','exam'];
+  let statsHtml = `<div class="subject-stats">
+    <div class="stats-title">Subject Progress</div>
+    <div class="stats-grid">`;
+
+  studySubjects.forEach(key => {
+    if (!stats[key] || !SUBJECTS[key]) return;
+    const s = stats[key];
+    const pctS = s.total ? Math.round((s.done / s.total) * 100) : 0;
+    const color = subjectColor(key);
+    const isComplete = pctS === 100 && s.total > 0;
+    statsHtml += `
+    <div class="stat-card" style="${isComplete ? `border-color:${hexToRgba(color,0.3)};` : ''}">
+      <div class="stat-label" style="color:${color}">${SUBJECTS[key].label}</div>
+      <div class="stat-counts">${s.done} / ${s.total} tasks</div>
+      <div class="stat-bar">
+        <div class="stat-bar-fill" style="width:${pctS}%;background:${color};box-shadow:0 0 6px ${hexToRgba(color,0.4)}"></div>
+      </div>
+      ${isComplete ? `<div class="stat-complete-badge" style="background:${hexToRgba(color,0.12)};color:${color};border:1px solid ${hexToRgba(color,0.3)}">Complete ✓</div>` : ''}
+    </div>`;
+  });
+
+  statsHtml += `</div></div>`;
+
+  return headerHtml + taskListHtml + statsHtml;
+}
+
+// ─────────────────────────────────────────────────────────────
+// EVENTS
+// ─────────────────────────────────────────────────────────────
+
+function attachEvents() {
+  // Day pill clicks
+  document.querySelectorAll('.day-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      activeDayId = pill.dataset.day;
+      renderApp();
+      // Scroll active pill into view
+      setTimeout(() => {
+        const active = document.querySelector('.day-pill.active');
+        if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }, 50);
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    });
+  });
+
+  // Check button clicks
+  document.querySelectorAll('.check-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const taskId = btn.dataset.task;
+      toggleTask(taskId);
+    });
+  });
+
+  // Card clicks (for checkable tasks)
+  document.querySelectorAll('.task-card[data-checkable="true"]').forEach(card => {
+    card.addEventListener('click', () => {
+      toggleTask(card.dataset.task);
+    });
+  });
+}
+
+function toggleTask(taskId) {
+  if (completed.has(taskId)) {
+    completed.delete(taskId);
+  } else {
+    completed.add(taskId);
+    // Check if this triggers a milestone
+    checkMilestone(taskId);
+  }
+  saveCompleted(completed);
+  renderApp();
+}
+
+function checkMilestone(taskId) {
+  // Find the task
+  for (const day of DAYS) {
+    const task = day.tasks.find(t => t.id === taskId);
+    if (task && task.milestone) {
+      launchConfetti(task.subject);
+    }
+  }
+}
+
+function launchConfetti(subject) {
+  const color = subjectColor(subject);
+  const colors = [color, '#fff', hexToRgba(color, 0.7)];
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => {
+      const p = document.createElement('div');
+      p.className = 'confetti-particle';
+      const size = Math.random() * 8 + 4;
+      p.style.cssText = `
+        left: ${Math.random() * 100}%;
+        width: ${size}px;
+        height: ${size * 0.4}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration: ${1.5 + Math.random()}s;
+        animation-delay: ${Math.random() * 0.5}s;
+      `;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 3000);
+    }, i * 30);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────
+
+renderApp();
+
+// Scroll active day pill into view on load
+setTimeout(() => {
+  const active = document.querySelector('.day-pill.active');
+  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}, 100);
+</script>
+</body>
+</html>
