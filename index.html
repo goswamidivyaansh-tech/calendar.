@@ -50,7 +50,7 @@
       position: fixed;
       inset: 0;
       background-image: radial-gradient(circle, rgba(255,255,255,0.012) 1px, transparent 1px);
-      background-size: 28px 28px;
+      background-size: 32px 32px;
       pointer-events: none;
       z-index: 0;
     }
@@ -67,9 +67,9 @@
       z-index: 0;
     }
 
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: var(--surface); }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
 
     /* ─── HEADER ─── */
     header {
@@ -79,55 +79,55 @@
       background: rgba(5,5,10,0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 64px;
+      padding: 0 28px;
+      height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 20px;
     }
 
     .logo {
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 800;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       white-space: nowrap;
       flex-shrink: 0;
     }
 
     .logo-dot {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: var(--methods);
-      box-shadow: 0 0 10px var(--methods);
+      box-shadow: 0 0 12px var(--methods);
       animation: pulse-dot 2s ease-in-out infinite;
     }
 
     @keyframes pulse-dot {
-      0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--methods); }
-      50% { opacity: 0.6; box-shadow: 0 0 20px var(--methods); }
+      0%, 100% { opacity: 1; box-shadow: 0 0 12px var(--methods); }
+      50% { opacity: 0.6; box-shadow: 0 0 24px var(--methods); }
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 24px;
     }
 
     .overall-progress {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .progress-label {
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--muted2);
       letter-spacing: 0.08em;
@@ -136,35 +136,35 @@
     }
 
     .progress-track {
-      width: 120px;
-      height: 4px;
+      width: 150px;
+      height: 5px;
       background: rgba(255,255,255,0.08);
-      border-radius: 2px;
+      border-radius: 3px;
       overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--methods), var(--physics));
-      border-radius: 2px;
+      border-radius: 3px;
       transition: width 0.5s ease;
-      box-shadow: 0 0 8px rgba(96,165,250,0.5);
+      box-shadow: 0 0 10px rgba(96,165,250,0.5);
     }
 
     .progress-pct {
       font-family: 'Space Mono', monospace;
-      font-size: 12px;
+      font-size: 14px;
       color: var(--methods);
-      min-width: 36px;
+      min-width: 40px;
       text-align: right;
     }
 
     .next-sac-badge {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 20px;
       background: rgba(248,113,113,0.12);
       border: 1px solid rgba(248,113,113,0.25);
@@ -175,12 +175,12 @@
     /* ─── DAY STRIP ─── */
     .day-strip-wrapper {
       position: sticky;
-      top: 64px;
+      top: 76px;
       z-index: 90;
       background: rgba(5,5,10,0.92);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
+      padding: 14px 28px;
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -188,7 +188,7 @@
 
     .day-strip {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       min-width: max-content;
     }
 
@@ -196,13 +196,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
-      padding: 8px 14px;
-      border-radius: 10px;
+      gap: 4px;
+      padding: 10px 18px;
+      border-radius: 12px;
       cursor: pointer;
       border: 1px solid transparent;
       transition: all 0.2s ease;
-      min-width: 64px;
+      min-width: 76px;
       background: rgba(255,255,255,0.02);
     }
 
@@ -230,7 +230,7 @@
     }
 
     .pill-label {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -242,30 +242,30 @@
 
     .pill-date {
       font-family: 'Space Mono', monospace;
-      font-size: 14px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text);
     }
 
     .pill-dots {
       display: flex;
-      gap: 3px;
-      margin-top: 1px;
+      gap: 4px;
+      margin-top: 2px;
     }
 
     .pill-dot {
-      width: 4px;
-      height: 4px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
     }
 
     .pill-badge {
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 2px 5px;
-      border-radius: 3px;
+      padding: 3px 7px;
+      border-radius: 4px;
       margin-top: 2px;
     }
 
@@ -273,25 +273,25 @@
     .main-layout {
       position: relative;
       z-index: 1;
-      max-width: 800px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 32px 24px 80px;
+      padding: 40px 28px 100px;
     }
 
     /* ─── DAY HEADER ─── */
     .day-header {
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 16px;
+      gap: 20px;
       flex-wrap: wrap;
     }
 
     .day-title-group {}
 
     .day-title {
-      font-size: 26px;
+      font-size: 32px;
       font-weight: 800;
       color: #fff;
       letter-spacing: -0.02em;
@@ -301,18 +301,18 @@
     .day-subtitle-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 6px;
+      gap: 12px;
+      margin-top: 8px;
       flex-wrap: wrap;
     }
 
     .day-badge {
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 4px;
+      padding: 4px 10px;
+      border-radius: 5px;
     }
 
     .badge-today {
@@ -340,7 +340,7 @@
     }
 
     .day-task-count {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--muted2);
     }
@@ -354,14 +354,14 @@
 
     .day-progress-ring {
       position: relative;
-      width: 52px;
-      height: 52px;
+      width: 64px;
+      height: 64px;
     }
 
     .ring-svg { transform: rotate(-90deg); }
 
-    .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 3; }
-    .ring-fill { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+    .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 3.5; }
+    .ring-fill { fill: none; stroke-width: 3.5; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
 
     .ring-text {
       position: absolute;
@@ -370,7 +370,7 @@
       align-items: center;
       justify-content: center;
       font-family: 'Space Mono', monospace;
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 700;
       color: #fff;
     }
@@ -379,14 +379,14 @@
     .task-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .task-card {
       display: flex;
       align-items: center;
       gap: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--card);
       border: 1px solid var(--border);
       overflow: hidden;
@@ -414,20 +414,20 @@
     }
 
     .task-accent {
-      width: 4px;
+      width: 5px;
       flex-shrink: 0;
       align-self: stretch;
     }
 
     .task-time {
-      padding: 14px 12px 14px 14px;
+      padding: 16px 14px 16px 16px;
       flex-shrink: 0;
-      min-width: 90px;
+      min-width: 110px;
     }
 
     .time-start {
       font-family: 'Space Mono', monospace;
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text);
       white-space: nowrap;
@@ -435,20 +435,20 @@
 
     .time-end {
       font-family: 'Space Mono', monospace;
-      font-size: 10px;
+      font-size: 12px;
       color: var(--muted);
-      margin-top: 2px;
+      margin-top: 3px;
       white-space: nowrap;
     }
 
     .task-body {
       flex: 1;
-      padding: 14px 10px;
+      padding: 16px 12px;
       min-width: 0;
     }
 
     .task-label {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--text);
       line-height: 1.3;
@@ -463,35 +463,35 @@
     .task-meta {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 4px;
+      gap: 10px;
+      margin-top: 6px;
       flex-wrap: wrap;
     }
 
     .task-dur {
       font-family: 'Space Mono', monospace;
-      font-size: 10px;
+      font-size: 12px;
       color: var(--muted);
     }
 
     .task-loc {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--muted);
-      padding: 2px 6px;
+      padding: 3px 8px;
       background: rgba(255,255,255,0.04);
-      border-radius: 3px;
+      border-radius: 4px;
     }
 
     .exam-label-badge {
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 3px;
+      padding: 3px 9px;
+      border-radius: 4px;
       background: rgba(248,113,113,0.15);
       color: var(--exam);
       border: 1px solid rgba(248,113,113,0.3);
@@ -499,15 +499,15 @@
 
     .task-check {
       flex-shrink: 0;
-      padding: 14px 16px;
+      padding: 16px 18px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .check-btn {
-      width: 24px;
-      height: 24px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       border: 2px solid rgba(255,255,255,0.15);
       background: transparent;
@@ -541,9 +541,9 @@
     .milestone-banner {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 10px;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 12px;
       background: rgba(52,211,153,0.06);
       border: 1px solid rgba(52,211,153,0.2);
       margin: 4px 0;
@@ -556,12 +556,12 @@
     }
 
     .milestone-icon {
-      font-size: 18px;
+      font-size: 22px;
       flex-shrink: 0;
     }
 
     .milestone-text {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.04em;
       color: var(--chemistry);
@@ -569,31 +569,31 @@
 
     /* ─── SUBJECT STATS ─── */
     .subject-stats {
-      margin-top: 40px;
-      padding-top: 32px;
+      margin-top: 48px;
+      padding-top: 40px;
       border-top: 1px solid var(--border);
     }
 
     .stats-title {
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
     }
 
     .stat-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
+      border-radius: 12px;
+      padding: 18px;
       transition: all 0.2s ease;
     }
 
@@ -603,22 +603,22 @@
     }
 
     .stat-label {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .stat-counts {
       font-family: 'Space Mono', monospace;
-      font-size: 11px;
+      font-size: 13px;
       color: var(--muted2);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .stat-bar {
-      height: 3px;
+      height: 4px;
       background: rgba(255,255,255,0.07);
       border-radius: 2px;
       overflow: hidden;
@@ -631,13 +631,13 @@
     }
 
     .stat-complete-badge {
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 3px;
-      margin-top: 6px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-top: 8px;
       display: inline-block;
     }
 
@@ -646,7 +646,7 @@
       text-align: center;
       padding: 40px 20px;
       color: var(--muted2);
-      font-size: 13px;
+      font-size: 15px;
     }
 
     /* ─── ANIMATIONS ─── */
@@ -661,17 +661,17 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 600px) {
-      header { padding: 0 16px; }
-      .header-right { gap: 12px; }
-      .progress-track { width: 80px; }
+      header { padding: 0 20px; height: 68px; }
+      .header-right { gap: 14px; }
+      .progress-track { width: 100px; }
       .next-sac-badge { display: none; }
-      .day-strip-wrapper { padding: 10px 16px; }
-      .main-layout { padding: 24px 16px 80px; }
-      .day-title { font-size: 20px; }
-      .task-time { min-width: 76px; padding: 12px 8px 12px 12px; }
-      .time-start { font-size: 10px; }
-      .time-end { font-size: 9px; }
-      .task-label { font-size: 12px; }
+      .day-strip-wrapper { padding: 12px 18px; top: 68px; }
+      .main-layout { padding: 28px 18px 90px; }
+      .day-title { font-size: 24px; }
+      .task-time { min-width: 90px; padding: 14px 10px 14px 14px; }
+      .time-start { font-size: 12px; }
+      .time-end { font-size: 10px; }
+      .task-label { font-size: 14px; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
     }
 
@@ -1099,8 +1099,8 @@ function renderDayContent() {
   const doneCount = checkable.filter(t => completed.has(t.id)).length;
   const pct = checkable.length ? Math.round((doneCount / checkable.length) * 100) : 0;
 
-  // Ring circumference
-  const r = 20;
+  // Ring — updated radius for 64px container
+  const r = 25;
   const circ = 2 * Math.PI * r;
   const offset = circ - (pct / 100) * circ;
   const ringColor = day.hasExam ? '#f87171' : '#60a5fa';
@@ -1122,9 +1122,9 @@ function renderDayContent() {
     </div>
     <div class="day-stats-right">
       <div class="day-progress-ring">
-        <svg class="ring-svg" width="52" height="52" viewBox="0 0 52 52">
-          <circle class="ring-bg" cx="26" cy="26" r="${r}"/>
-          <circle class="ring-fill" cx="26" cy="26" r="${r}"
+        <svg class="ring-svg" width="64" height="64" viewBox="0 0 64 64">
+          <circle class="ring-bg" cx="32" cy="32" r="${r}"/>
+          <circle class="ring-fill" cx="32" cy="32" r="${r}"
             stroke="${ringColor}"
             stroke-dasharray="${circ}"
             stroke-dashoffset="${offset}"/>
@@ -1152,11 +1152,11 @@ function renderDayContent() {
       <div class="task-check">
         <div class="check-btn ${isDone ? 'checked' : ''}" data-task="${task.id}"
              style="${isDone ? `background:${color};box-shadow:0 0 10px ${hexToRgba(color,0.5)}` : ''}">
-          <svg class="check-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <svg class="check-icon" width="15" height="15" viewBox="0 0 12 12" fill="none">
             <path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-      </div>` : `<div style="width:56px"></div>`;
+      </div>` : `<div style="width:62px"></div>`;
 
     const cardStyle = task.isExam
       ? `box-shadow:0 0 0 1px rgba(248,113,113,0.2), inset 0 0 30px rgba(248,113,113,0.03);`
@@ -1224,12 +1224,10 @@ function renderDayContent() {
 // ─────────────────────────────────────────────────────────────
 
 function attachEvents() {
-  // Day pill clicks
   document.querySelectorAll('.day-pill').forEach(pill => {
     pill.addEventListener('click', () => {
       activeDayId = pill.dataset.day;
       renderApp();
-      // Scroll active pill into view
       setTimeout(() => {
         const active = document.querySelector('.day-pill.active');
         if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -1238,7 +1236,6 @@ function attachEvents() {
     });
   });
 
-  // Check button clicks
   document.querySelectorAll('.check-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1247,7 +1244,6 @@ function attachEvents() {
     });
   });
 
-  // Card clicks (for checkable tasks)
   document.querySelectorAll('.task-card[data-checkable="true"]').forEach(card => {
     card.addEventListener('click', () => {
       toggleTask(card.dataset.task);
@@ -1260,7 +1256,6 @@ function toggleTask(taskId) {
     completed.delete(taskId);
   } else {
     completed.add(taskId);
-    // Check if this triggers a milestone
     checkMilestone(taskId);
   }
   saveCompleted(completed);
@@ -1268,7 +1263,6 @@ function toggleTask(taskId) {
 }
 
 function checkMilestone(taskId) {
-  // Find the task
   for (const day of DAYS) {
     const task = day.tasks.find(t => t.id === taskId);
     if (task && task.milestone) {
@@ -1305,7 +1299,6 @@ function launchConfetti(subject) {
 
 renderApp();
 
-// Scroll active day pill into view on load
 setTimeout(() => {
   const active = document.querySelector('.day-pill.active');
   if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
